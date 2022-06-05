@@ -1,5 +1,7 @@
 Ques 1: Set Matrix Zero.
 
+Code:-
+
 #include <bits/stdc++.h> 
 void setZeros(vector<vector<int>> &m)
 {
@@ -25,3 +27,141 @@ void setZeros(vector<vector<int>> &m)
             if(col0==0) m[i][0]=0;
         }
 }
+
+Ques 2: Pascal's Triangle
+
+Code:-
+
+#include <bits/stdc++.h> 
+vector<vector<long long int>> printPascal(int numRows) 
+{
+
+    vector<vector<long long int>> ans;
+        
+        for(int i=0;i<numRows;i++)
+        {
+            vector<long long int> row(i+1,1);
+            
+            for(int j=1;j<i;j++)
+            {
+                row[j]=ans[i-1][j]+ans[i-1][j-1];
+            }
+            ans.push_back(row);
+        }
+        return ans;
+}
+
+Ques 3: Next Permutation
+
+Code:-
+
+#include <bits/stdc++.h> 
+vector<int> nextPermutation(vector<int> &nums, int n)
+{
+        int breakpoint=-1;
+        
+        // step1 find the breakpoint.
+        for(int i=n-1;i>0;i--)
+        {
+            if(nums[i]>nums[i-1])
+            {
+                breakpoint=i-1;
+                break;
+            }
+        }
+            
+        // step 2 if not find a breakpoint then reverse.
+        
+        if(breakpoint<0)
+        {
+            reverse(nums.begin(),nums.end());
+            return nums;
+        }
+             
+        // step 3 swap with the breakpoints if nums[i]>nums[breakpoint]
+        for(int i=n-1;i>=0;i--)
+        {
+            if(nums[i]>nums[breakpoint])
+            {
+                swap(nums[i],nums[breakpoint]);
+                reverse(nums.begin()+breakpoint+1,nums.end());
+                return nums;
+            }
+        }
+      return nums;
+}
+
+Ques 4: Maximum Subarray Sum
+
+Code:-
+
+#include <bits/stdc++.h>
+
+long long maxSubarraySum(int arr[], int n)
+{
+
+   long long maxsum=0;
+   long long currsum=0;
+   for(int i=0;i<n;i++)
+   {
+       currsum=currsum+arr[i];
+
+       if(currsum>maxsum) maxsum=currsum;
+
+       if(currsum<0) currsum=0;
+   }
+   	return maxsum; 
+}
+
+
+Ques 5: Sort 0's , 1's and 2's
+
+Code:-
+
+void sort012(int *nums, int n)
+{
+        int low=0;
+        int mid=0;
+        int high=n-1;
+        
+        while(mid<=high)
+        {
+            if(nums[mid]==0)
+            {
+                swap(nums[low],nums[mid]);
+                low++;
+                mid++;
+                            
+            }
+            else if(nums[mid]==1)
+            {
+               mid++; 
+            }
+            
+            else if(nums[mid]==2)
+            {
+                swap(nums[mid],nums[high]);
+                high--;
+            }
+        }           
+}
+
+Ques 6: Stocks Buy and Sell
+
+Code:-
+
+#include <bits/stdc++.h> 
+int maximumProfit(vector<int> &prices)
+{
+  	int n=prices.size();
+        int minPrice=INT_MAX;
+        int maxProfit=0;
+        for(int i=0;i<n;i++)
+        
+        {
+            minPrice=min(minPrice,prices[i]);
+            maxProfit=max(maxProfit,prices[i]-minPrice);
+        }
+        return maxProfit;
+}
+
