@@ -1,0 +1,175 @@
+Ques 1:- 2 SUM Problem
+
+Code:-
+
+vector<vector<int>> pairSum(vector<int> &arr, int s)
+{
+   vector<vector<int>> ans;
+    
+    for(int i=0;i<arr.size();i++)
+    {
+         for(int j=i+1;j<arr.size();j++)
+        {
+             if(arr[i]+arr[j]==s)
+             {
+                 vector<int> temp;
+                 temp.push_back(min(arr[i],arr[j]));
+                 temp.push_back(max(arr[i],arr[j]));
+                 ans.push_back(temp);
+             }          
+        }
+    }
+       sort(ans.begin(),ans.end());
+       return ans;                  
+}
+
+
+Ques 2:- 4 SUM Problem
+
+Code:-
+
+string fourSum(vector<int> nums, int target, int n) {
+    
+        string ans="No";
+      
+        if(n<4)  return ans;
+        sort(nums.begin(),nums.end());
+        for(int i=0;i<n-3;i++)
+        {
+            if(i>0&&nums[i]==nums[i-1]) continue;
+            if(nums[i]+nums[i+1]+nums[i+2]+nums[i+3]>target) break;
+            if(nums[i]+nums[n-3]+nums[n-2]+nums[n-1]<target) continue;
+            for(int j=i+1;j<n-2;j++)
+            {
+                if(j>i+1&&nums[j]==nums[j-1]) continue;
+                if(nums[i]+nums[j]+nums[j+1]+nums[j+2]>target) break;
+                if(nums[i]+nums[j]+nums[n-2]+nums[n-1]<target) continue;
+                int left=j+1,right=n-1;
+                while(left<right){
+                    int sum=nums[left]+nums[right]+nums[i]+nums[j];
+                    if(sum<target) left++;
+                    else if(sum>target) right--;
+                    else{
+                        ans="Yes";
+                        do{left++;}while(nums[left]==nums[left-1]&&left<right);
+                        do{right--;}while(nums[right]==nums[right+1]&&left<right);
+                    }
+                }
+            }
+        }
+        return ans;
+}
+
+
+Ques 3:- Longest Consecutive Sequence
+
+Code:-
+
+int lengthOfLongestConsecutiveSequence(vector<int> &nums, int n) {
+     
+        if(n==0) return 0;
+        sort(nums.begin(),nums.end());
+        
+        int longest=0 , curr_longest=1;
+        
+        for(int i=1;i<n;i++)
+        {
+            // Three Contds:- 
+            if(nums[i]==nums[i-1]) continue;
+            else if(nums[i]==nums[i-1]+1) curr_longest++;
+            else
+            {
+                longest=max(curr_longest,longest);
+                curr_longest=1;
+            }
+        }
+        
+        return max(longest,curr_longest);
+}
+
+
+Ques 4:- Largest Subarray with 0 sum
+
+Code:-
+
+int LongestSubsetWithZeroSum(vector < int > A) {
+
+       unordered_map<int,int> map;
+        int n=A.size();
+        int sum=0;
+        int maxi=0;
+        
+        for(int i=0;i<n;i++)
+        {
+            sum+=A[i];
+            
+            if(sum==0) maxi=i+1;
+            
+            else 
+            {
+                if(map.find(sum)!=map.end()) maxi=max(maxi,i-map[sum]);
+                
+                else map[sum]=i;
+            }
+        }
+        return maxi;
+
+}
+
+
+Ques 5:- Count number of subarrays with given Xor K
+
+Code:-
+
+int subarraysXor(vector<int> &A, int B)
+{
+    unordered_map<int,int> visited;
+    int cpx=0;
+    long long c=0;
+
+    for(int i=0;i<A.size();i++)
+    {
+        cpx^=A[i];
+        if(cpx==B) c++;
+        // Here we make a variable where we store the value of h as xor of CPX of B.
+        int h=cpx^B;
+
+        if(visited.find(h)!=visited.end()) c+=visited[h];
+
+        visited[cpx]++;
+    }
+        return c;
+}
+
+
+Ques 6:- Longest Substring without repeat
+
+Code:-
+
+int uniqueSubstrings(string s)
+{
+    unordered_set<char> set;
+        
+        int i=0 , j=0 , n=s.size(), ans=0;
+        
+        while(i<n && j<n)
+        {
+            
+            if(set.find(s[j])==set.end()) 
+                
+            {
+                set.insert(s[j++]); // Insert the char in set.
+                ans=max(ans,j-i); // Update the max length.
+            }
+            
+            else 
+            {
+                set.erase(s[i++]);
+                
+                // It means that the character is present in the set.
+                // Update the left side counter and check for rest of substring.
+            }
+            
+        }
+            return ans;
+}
