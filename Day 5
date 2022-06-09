@@ -1,0 +1,186 @@
+Ques 1:- Reverse a LinkedList
+
+Code:-
+
+LinkedListNode<int> *reverseLinkedList(LinkedListNode<int> *head) 
+{
+    if(head==NULL || head->next==NULL) return head;
+    LinkedListNode<int> *prev=NULL;
+    LinkedListNode<int> *curr=head;
+    
+    while(curr!=NULL)
+    {
+        LinkedListNode<int>* forward=curr->next;
+        curr->next=prev;
+        prev=curr; 
+        curr=forward;
+
+    }
+    return prev;   
+}
+
+
+Ques 2:- Find the middle of LinkedList
+
+Code:-
+
+Node *findMiddle(Node *head) 
+{
+
+        Node* slow=head, *fast=head;
+        
+        while(fast && fast->next)
+        
+        {
+            slow=slow->next;
+            fast=fast->next->next;
+        }
+            return slow;
+}
+
+
+Ques 3:-Merge two sorted Linked List 
+
+Code:-
+
+Node<int>* solve(Node<int>* first, Node<int>* second)
+{
+    // When there is only single elements
+    if(first->next==NULL)
+    {
+        first->next=second;
+        return first;
+    }
+    
+    // Initialise all the nodes
+       Node<int>* curr1=first;
+       Node<int>* next1=curr1->next;
+       Node<int>* curr2=second;
+       Node<int>* next2=curr2->next;
+    
+    while(next1!=NULL and curr2!=NULL)
+    {
+        if((curr2->data>=curr1->data) and (curr2->data<=next1->data))
+        {
+            curr1->next=curr2;
+            next2=curr2->next;
+            curr2->next=next1;
+            
+            curr1=curr2;
+            curr2=next2;
+        }
+        
+        else 
+        {
+            curr1=next1;
+            next1=next1->next;
+            
+            if(next1==NULL)
+            {
+                curr1->next=curr2;
+                return first;
+            }
+        }  
+    }
+       return first;
+}
+
+
+Node<int>* sortTwoLists(Node<int>* list1, Node<int>* list2)
+{
+    if(list1==NULL) return list2;
+    if(list2==NULL) return list1;
+    
+    
+    // Check the condition agr list1 ka pehla word bda hai toh usko second mano then agr nhi hai toh usko      
+    //  second mano 
+    
+    if(list1->data<=list2->data) return solve(list1,list2);
+    
+    else return solve(list2,list1);
+     
+}
+
+
+Ques 4:- Remove N-th node from back of LinkedList
+
+Code:-
+
+LinkedListNode<int>* removeKthNode(LinkedListNode<int> *head, int K)
+{
+     LinkedListNode<int>* fast=head , *slow =head;
+        
+      
+        if(head==NULL || K==0) return head;
+        
+        // Iterate first n nodes.
+        while(K--) fast=fast->next;
+   
+        //if fast is already null that means we have to delete the head itself.
+        if(!fast) return head->next;
+        
+        while(fast->next)
+        {
+            fast=fast->next;
+            slow=slow->next;
+        }
+        slow->next=slow->next->next;
+        return head;
+}
+
+
+Ques 5:- Add two numbers as LinkedList
+
+Code:-
+
+Node *addTwoNumbers(Node *l1, Node *l2)
+{
+      // Follow the Steps to do this Question:-
+        
+        // Step 1:- Creating an dummy list.
+        Node *dummy =new Node(0);
+        
+        // Step 2:- Initialising an Pointer.
+        Node *curr=dummy;
+        
+        int carry=0;
+        
+        // Step 3:- While Loop run till l1 and l2 reaches to zero.If they both reaches null but carry 
+        // has some value in it.Then we have to add this as well.
+        
+        while(l1!=NULL || l2!=NULL || carry==1)
+        {
+            int sum=0;
+            
+            if(l1!=NULL)
+            {
+                sum+=l1->data;
+                l1=l1->next;
+            }
+            
+            if(l2!=NULL)
+            {
+                sum+=l2->data;
+                l2=l2->next;
+            }
+            
+            sum+=carry; 
+            carry=sum/10; // Get the carry by dividing 10;
+            Node* node = new Node(sum%10); // Add a new node by modulating
+            curr->next=node;  // curr next node is the node we mentioned above
+            curr=curr->next; 
+        }
+        return dummy->next;
+}
+
+
+Ques 6:- Delete a given Node when a node is given.
+
+Code:-
+
+void deleteNode(LinkedListNode<int> * node) {
+  
+        node->data=node->next->data;
+        node->next=node->next->next;
+}
+
