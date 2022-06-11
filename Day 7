@@ -1,0 +1,241 @@
+Ques 1:- Rotate a Linked List
+
+Code:- 
+
+Node *rotate(Node *head, int k) {
+     
+    if(head==NULL || head->next==NULL) return head;
+        
+        Node* node=head;
+        int size=1;
+        
+        while(node->next!=NULL)
+        {
+            size++;
+            node=node->next;
+        }
+        
+        // Join the last node to front make a cycle
+        node->next=head;
+        
+        // find out the value of k using modulo
+        k=k%size;
+        
+        while(--size>=k)
+        {
+            node=node->next;
+        }
+        
+        Node* first=node->next;
+        node->next=NULL;
+        
+        return first;
+}
+
+
+Ques 2:- Clone a Linked List with random and next pointer
+
+Code:-
+
+ void insertAtTail(LinkedListNode<int>* &head , LinkedListNode<int>* &tail , int d)
+    {
+        // Insert At Tail.
+        
+        LinkedListNode<int>* newNode=new  LinkedListNode<int>(d);
+        
+        if(head==NULL)
+        {
+            head=newNode;
+            tail=newNode;
+            return;
+        }
+        
+        else
+        {
+            tail->next=newNode;
+            tail=newNode;
+        }
+    }
+
+LinkedListNode<int> *cloneRandomList(LinkedListNode<int> *head)
+{
+      LinkedListNode<int> *cloneHead=NULL;
+      LinkedListNode<int> *cloneTail=NULL;
+        
+        //Step 1 Create a Clone Linked List.
+        LinkedListNode<int> *temp=head;
+        
+        while(temp!=NULL)
+        {
+            insertAtTail(cloneHead,cloneTail,temp->data);
+            temp=temp->next;
+        }
+        
+        //Step 2 CloneNode Add in Between Original List.       
+       LinkedListNode<int> *originalNode=head;
+       LinkedListNode<int> *cloneNode=cloneHead;
+        
+        while(originalNode!=NULL && cloneNode!=NULL)
+        {
+            LinkedListNode<int> *next=originalNode->next;
+            originalNode->next=cloneNode;
+            originalNode=next;
+            
+            next=cloneNode->next;
+            cloneNode->next=originalNode;
+            cloneNode=next;
+            
+        }
+        
+        //Step 3 Random Pointer Copy       
+        temp=head;
+        while(temp!=NULL)
+        {
+            if(temp->next!=NULL)
+            {
+                temp->next->random=temp->random ? temp->random->next : temp->random;      
+            }
+            
+            temp=temp->next->next;
+        }
+        
+        //Step 4 Revert Changes done in Step 2;
+        originalNode=head;
+        cloneNode=cloneHead;
+        
+        while(originalNode!=NULL && cloneNode!=NULL)
+        {
+            originalNode->next=cloneNode->next;
+            originalNode=originalNode->next;
+            
+            if(originalNode!=NULL)
+            {
+               cloneNode->next=originalNode->next; 
+            }
+            
+            cloneNode=cloneNode->next;
+        }
+        
+        // Step5 return ans
+        return cloneHead; 
+        
+}
+
+Ques 3:- 3 sum
+
+Code:-
+
+vector<vector<int>> findTriplets(vector<int>nums, int n, int K) {
+	vector<vector<int>> ans;
+        
+        
+        int low,high;
+        int sum;
+        
+        sort(nums.begin(),nums.end());
+        
+        for(int i=0;i<n-2;i++)
+        {
+            if(i==0 || (i>0 && nums[i]!=nums[i-1]))
+            {
+                low=i+1;
+                high=n-1;
+                sum=K-nums[i];
+                
+                while(low<high)
+                {
+                    if(nums[low]+nums[high]==sum)
+                    {
+                        vector<int> temp;
+                        temp.push_back(nums[i]);
+                        temp.push_back(nums[low]);
+                        temp.push_back(nums[high]);
+                        ans.push_back(temp);
+                        
+                        while(low<high && nums[low]==nums[low+1]) low++;
+                        while(low<high && nums[high]==nums[high-1]) high--;
+                        
+                        low++,high--;
+                    }
+                    
+                    else if(nums[low]+nums[high]<sum) low++;
+                    else high--;   
+                }
+            }
+        }
+         return ans;
+}
+
+Ques 4:- Trapping rainwater
+
+Code:-
+
+long getTrappedWater(long *A, int n){
+    
+        int l=0;
+        int r=n-1;
+        long leftmax=0;
+        long  rightmax=0;
+        
+        long  ans=0;
+        
+        while(l<=r)
+        {
+            leftmax=max(leftmax,A[l]);
+            rightmax=max(rightmax,A[r]);
+            
+            if(leftmax<rightmax)
+            {
+                ans+=(leftmax-A[l]);
+                l++;
+            }
+            
+            else
+            {
+                ans+=(rightmax-A[r]);
+                r--;
+            }
+        }
+        
+        return ans;
+}
+
+Ques 5:- Remove Duplicate from Sorted array
+
+Code:-
+
+   int left=0;
+        
+        for(int right=1;right<n;right++)
+        {
+            if(nums[left]!=nums[right]) left++;
+            nums[left]=nums[right];
+        }
+        return left+1;
+}
+
+Ques 6:- Max consecutive ones
+
+Code:-
+
+    int findMaxConsecutiveOnes(vector<int>& nums) {
+        int n=nums.size();
+        
+        int cnt=0, maxi=0;
+        for(int i=0;i<n;i++)
+        {
+            if(nums[i]==1)
+                cnt++;
+            else
+                cnt=0;
+            
+            maxi=max(maxi,cnt);
+                
+        }
+        
+        maxi=max(maxi,cnt);
+        
+        return maxi;
+    
+    }
+};
