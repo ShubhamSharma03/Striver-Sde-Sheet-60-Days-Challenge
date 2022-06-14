@@ -1,0 +1,287 @@
+Ques 1:- Print all permutations of a string/array
+
+Code:-
+
+void helper(int index,string &s, vector<string> &ans)
+{
+    if(index==s.size())
+    {
+        ans.push_back(s);
+        return;
+    }
+    
+    for(int i=index;i<s.size();i++)
+    {
+        swap(s[index],s[i]);
+        helper(index+1,s,ans);
+        swap(s[index],s[i]);
+    }
+}
+vector<string> findPermutations(string &s) {
+    vector<string> ans;
+    int index=0;
+    helper(index,s,ans);
+    return ans;
+}
+
+
+Ques 2:- N queens Problem
+
+Code:-
+
+vector<vector<int>> ans;
+bool check(vector<vector<int>> &ch, int row, int col, int n) {
+   for(int i=0; i<row; i++) if(ch[i][col]) return false;
+   int i=row-1, j=col-1;
+   while(i>=0&&j>=0) {
+       if(ch[i][j]) return false;
+       i--; j--;
+   }
+   i=row-1; j=col+1;
+   while(i>=0&&j<n) {
+       if(ch[i][j]) return false;
+       i--; j++;
+   }
+   return true;
+}
+
+void bt(vector<vector<int>> &ch, int row, int n, int q) {
+   if(row==n&&q==n) {
+       vector<int> ar;
+       for(auto a : ch) 
+           for(int b : a) 
+               ar.push_back(b);
+       ans.push_back(ar);
+       return;
+   }
+   for(int col=0; col<n; col++) {
+       if(check(ch, row, col, n)) {
+           ch[row][col]=1;
+           bt(ch, row+1, n, q+1);
+           ch[row][col]=0;
+       }
+   }
+}
+
+vector<vector<int>> solveNQueens(int n) {
+vector<vector<int>> ch(n, vector<int> (n, 0));
+   bt(ch, 0, n, 0);
+   return ans;
+}
+
+
+Ques 3:- Sudoku Solver
+
+Code:-
+
+bool isValid(int matrix[9][9],int x,int y,int val){
+    for(int j=0;j<9;j++){
+        if(matrix[x][j]==val){
+            return false;
+        }
+    }
+
+    for(int i=0;i<9;i++){
+        if(matrix[i][y]==val){
+            return false;
+        }
+    }
+
+    int subx=x/3 *3;
+    int suby=y/3 * 3;
+
+    for(int i=0;i<3;i++){
+        for(int j=0;j<3;j++){
+            if(matrix[subx + i][suby + j]==val){
+                return false;
+            }
+        }
+    }
+
+    return true;
+}
+
+bool solve(int matrix[9][9],int i,int j){
+    
+    if(i==9){ // if i reaches at the end then weve found one solution return true;
+        return true;
+    }
+    
+    int ni=0;
+    int nj=0;
+    
+    if(j==8){
+        ni=i+1;
+        nj=0;
+    }else{
+        ni=i;
+        nj=j+1;
+    }
+
+    if(matrix[i][j]!=0){
+        return solve(matrix,ni,nj);
+    }
+    
+    for(int po=1;po<=9;po++){
+        
+        if(isValid(matrix,i,j,po)){ // is valid hoga toh jaate jao
+            matrix[i][j]=po; // assign the po at this position
+            if(solve(matrix,ni,nj)){ // if the remaining matrix is giving true, then we know that we have one sudoku solution.
+                return true; // so return
+            }else{
+                matrix[i][j]=0; //else backtrack and try different combinations.
+            }
+        }
+    }
+
+    return false; // return false; if not found;
+
+
+}
+
+bool isItSudoku(int matrix[9][9]) {
+    
+    return solve(matrix,0,0);
+
+}
+
+
+Ques 4:- M coloring Problem
+
+Code:-
+
+bool ispossible(vector<vector<int>> &mat,vector<int>&color,int node,int col,int n)
+{
+
+    for(int i=0;i<n;i++)
+    {
+        if(node!=i && mat[node][i]==1 && color[i]==col) return false;
+    }
+        return true;
+}
+
+bool slv(vector<vector<int>> &mat,vector<int>&color,int n,int m,int node)
+{
+    if(node==n) return true;
+
+    for(int i=1;i<=m;i++)
+    {
+       if(ispossible(mat,color,node,i,n))
+       {
+           color[node]=i;
+           if(slv(mat,color,n,m,node+1))return true;
+           color[node]=0;
+       }
+    }    
+        return false;    
+}
+
+string graphColoring(vector<vector<int>> &mat, int m) 
+{
+   int n=mat.size();
+   vector<int>color(n,0);
+   if(slv(mat,color,n,m,0)) return "YES";
+   return "NO";
+
+}
+
+
+Ques 5:- Rat in a Maze
+
+Code:-
+
+bool dfs(vector<vector<int>> &maze,int i,int j,vector<vector<int>> &ans,int n,vector<vector<int>> &res)
+{
+   if(i<0 || j<0 || i>=n || j>=n || maze[i][j]==0 || ans[i][j]==1) return 0;
+   
+   if(i==n-1 && j==n-1 && maze[i][j]==1){
+       vector<int> path;
+       ans[i][j]=1;
+       for(int i=0;i<n;i++)
+       {
+           for(int j=0;j<n;j++)
+           {
+               path.push_back(ans[i][j]);
+           }
+       }
+       res.push_back(path);
+   }
+   
+   ans[i][j]=1;
+   dfs(maze,i+1,j,ans,n,res);
+   dfs(maze,i-1,j,ans,n,res);
+   dfs(maze,i,j+1,ans,n,res);
+   dfs(maze,i,j-1,ans,n,res);
+   ans[i][j]=0;
+}
+
+vector<vector<int> > ratInAMaze(vector<vector<int> > &maze, int n){
+
+  vector<vector<int>> ans(n,vector<int>(n,0));
+   vector<vector<int>> res;
+
+   dfs(maze,0,0,ans,n,res);
+   return res;
+}
+
+Ques 6:- Word Break
+
+Code:-
+
+void words(string &s, int start, vector<string> &dictionary, vector<string> &ans, string &curr) {
+    
+    // We've reached end of string
+    if(start >= s.size()) 
+    {
+        ans.push_back(curr);
+        return;
+    }
+    
+    for(int i=start; i<s.size(); ++i) 
+    {
+        string tmp = s.substr(start, i-start+1);
+        
+        // Check if this word is present in dictionary
+        bool isPresent = false;
+        for(string st : dictionary) 
+        {
+            if(st.compare(tmp) == 0) 
+            {
+                isPresent = true;
+                break;
+            }
+        }
+        
+        // If this word is present in dictionary
+        // then try the remaining string
+        if(isPresent) 
+        {
+            
+            string x = curr;
+            
+            // Push this to current ans
+            curr += tmp + " ";
+            
+            words(s, i+1, dictionary, ans, curr);
+            
+            // Backtracking
+            curr = x;
+        }
+    }
+}
+
+
+vector<string> wordBreak(string &s, vector<string> &dictionary)
+{
+    vector<string> ans;
+    string curr;
+    
+    words(s, 0, dictionary, ans, curr);
+    
+    return ans;
+}
+
+
+
+
+
