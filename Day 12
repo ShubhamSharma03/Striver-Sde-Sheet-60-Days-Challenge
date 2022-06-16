@@ -1,0 +1,208 @@
+Ques 1:- Median of 2 sorted arrays
+
+Code:-
+
+double mediann(vector<int>& nums1, vector<int>& nums2)
+    {
+         
+        int n=nums1.size();
+        int m=nums2.size();
+        
+        int begin1=0;
+        int end1=n;
+        if(n>m) return mediann(nums2,nums1);
+        while(begin1<=end1)
+        {
+            int i1=begin1+(end1-begin1)/2;
+            int i2=(n+m+1)/2-i1;
+            
+            int min1=(i1==n) ? INT_MAX : nums1[i1];
+            int max1=(i1==0) ? INT_MIN : nums1[i1-1];
+            
+            
+            int min2=(i2==m) ? INT_MAX : nums2[i2];
+            int max2=(i2==0) ? INT_MIN : nums2[i2-1];
+            
+            
+            if((max1<=min2) && (max2<=min1))
+            {
+                if((n+m)%2==0) return ((double) (max(max1,max2) + min(min1,min2))/2);
+                
+                else return ((double) max(max1,max2));
+                
+            }
+            
+            else if(max1>min2) end1=i1-1;
+            
+            else begin1=i1+1;
+        }
+        return -1.0;
+    }
+
+double median(vector<int> nums1, vector<int> nums2)    
+{
+        double ans;
+        ans=mediann(nums1,nums2);
+        return ans;
+    
+}
+
+
+Ques 2:- K-th element of two sorted arrays
+
+Code:-
+
+int ninjaAndLadoos(vector<int> &arr1, vector<int> &arr2, int n, int m, int index) 
+{
+        int i=0,j=0,k=0;
+        while(i<n && j<m)
+        {
+            if(arr1[i]<arr2[j])
+            {
+                if(k==index-1)
+                {
+                    return arr1[i];
+                }
+                i++;
+                k++;
+            }
+            
+            else
+            {
+                if(k==index-1)
+                {
+                    return arr2[j];
+                }
+                
+                j++;
+                k++;
+            }
+        }
+    
+        while(i<n)
+        {
+            if(k==index-1)
+            {
+                return arr1[i];
+            }
+            i++;
+            k++;
+        }
+    
+        while(j<m)
+        {
+            if(k==index-1)
+            {
+                return arr2[j];
+            }
+            j++;
+            k++;
+        }
+}
+
+
+Ques 3:- Allocate Minimum Number of Pages
+
+Code:-
+
+bool isPossible(vector<int> arr,int n,int m,long long int mid)
+{
+    int studentCount=1;
+    long long int pageSum=0;
+    
+    for(int i=0;i<m;i++)
+    {
+        if(pageSum+arr[i]<=mid)
+        {
+            pageSum+=arr[i];
+        }
+        else
+        {
+            studentCount++;
+            if(studentCount>n || arr[i]>mid) return false;
+            pageSum=arr[i];
+        }
+    }
+    return true;
+}
+
+long long ayushGivesNinjatest(int n, int m, vector<int> arr) 
+{
+    long long  s=0;
+    long long  sum=0;
+    
+    for(int i=0;i<arr.size();i++) sum+=arr[i];
+    
+    long long  e=sum;
+    long long  ans=-1;
+       
+    while(s<=e)
+    {
+        // Agar possible hai toh hum left side mai move krenge kyuki hume minimum number of pasges allocate karne hai 
+        long long  mid=s+(e-s)/2;
+        if(isPossible(arr,n,m,mid))
+        {
+            ans=mid;
+            e=mid-1;
+        }
+        else 
+        {
+            s=mid+1;
+        }  
+    }
+        return ans;
+}
+
+
+Ques 4:- Aggressive Cows
+
+Code:-
+
+bool isPossible(vector<int> stalls , int c ,  int dist)
+{
+    int cowCount=1;
+    int lastPos=0;
+    
+    for(int i=0;i<stalls.size();i++)
+    {
+        if(stalls[i]-stalls[lastPos]>=dist)
+        {
+            cowCount++;
+            if(cowCount>=c) return true;
+            lastPos=i;
+        }
+    }
+    return false;
+}
+int chessTournament(vector<int> stalls , int n ,  int c)
+{
+    
+    sort(stalls.begin(),stalls.end());
+    
+    int s=0;
+    int maxi=-1;
+    for(int i=0;i<n;i++)
+    {
+        maxi=max(maxi,stalls[i]);
+    }
+    
+    int e=maxi;
+    int ans=-1;
+    int mid=s+(e-s)/2;
+    
+    while(s<=e)
+    {
+        if(isPossible(stalls,c,mid))
+        {
+            ans=mid;
+            s=mid+1;
+        }
+        
+        else e=mid-1;
+        
+        mid=s+(e-s)/2;
+    }
+    return ans;
+}
+
+
