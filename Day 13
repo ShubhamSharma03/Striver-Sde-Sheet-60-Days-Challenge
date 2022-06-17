@@ -38,10 +38,9 @@ int findKthLargest(vector<int>& nums, int k) {
         return minh.top();
     }
     
+Ques 3:- Maximum Sum Combination
     
-    Ques 3:- Maximum Sum Combination
-    
-    Code:-
+Code:-
     
   vector<int> kMaxSumCombination(vector<int> &a, vector<int> &b, int n, int k){
 	priority_queue<int>pq;
