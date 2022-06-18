@@ -1,0 +1,105 @@
+Ques 1:- Find Median from Data Stream
+
+Code:-
+
+class MedianFinder {
+public:
+     priority_queue<int> maxq ;
+    priority_queue<int, vector<int>, greater<int>> minq ;
+    
+    MedianFinder()
+    {
+        
+    }
+    
+    void addNum(int num) 
+    {
+        maxq.push(num);
+        minq.push(maxq.top());
+        maxq.pop();
+        if(maxq.size()<minq.size())
+        {
+            maxq.push(minq.top());
+            minq.pop();
+        }
+    }
+    
+    int findMedian() 
+    {
+         if(maxq.size()>minq.size())
+        {
+            return maxq.top();
+        }
+        else
+        {
+            return (maxq.top()+minq.top())/2;
+        }
+    }
+};
+void findMedian(int *arr, int n)
+{
+    MedianFinder* obj = new MedianFinder();
+  
+    for(int i=0;i<n;i++)
+    {
+       obj->addNum(arr[i]);
+      cout<<obj->findMedian()<<" ";
+    }
+}
+
+
+Ques 2:- Merge K Sorted Arrays
+
+Code:-
+
+vector<int> mergeKSortedArrays(vector<vector<int>>&kArrays, int k)
+{
+ 
+    priority_queue<int, vector<int>, greater<int>> minh;
+    for(int i=0; i<k ; i++){
+        for(int j=0; j< kArrays[i].size(); j++){
+            minh.push(kArrays[i][j]);
+        }
+    }
+    
+    vector<int> res;
+    while(minh.size() > 0) {
+        res.push_back(minh.top());
+        minh.pop();
+    }  
+    return res;
+}
+
+Ques 3:- K most frequent elements
+
+Code:-
+
+vector<int> topKFrequent(vector<int>& nums, int k) {
+        
+        vector<int> ans;
+        int n=nums.size();
+        unordered_map<int,int> mp;
+        priority_queue < pair<int,int>, vector<pair<int,int>>,greater<pair<int,int>>> minh;
+        
+        for(int i=0;i<n;i++)
+        {
+            mp[nums[i]]++;
+        }
+        
+        for(auto it=mp.begin(); it!=mp.end();it++)
+        {
+            minh.push({it->second,it->first});
+            if(minh.size()>k)
+            {
+               minh.pop(); 
+            }
+        }
+        
+        while(minh.size()>0)
+        {
+            ans.push_back(minh.top().second);
+            minh.pop();
+        }
+        sort(ans.begin(),ans.end());
+        return ans;
+    }
