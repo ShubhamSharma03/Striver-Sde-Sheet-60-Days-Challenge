@@ -1,0 +1,102 @@
+Ques 1:- Implement Stack Using Arrays
+
+Code:-
+
+class Stack {
+  int size;
+  int * arr;
+  int top;
+  
+  public:
+    Stack() {
+      top = -1;
+      size = 1000;
+      arr = new int[size];
+    }
+    
+  void push(int x) 
+  {
+      top++;
+      arr[top] = x;
+  }
+  
+  int pop() 
+  {
+    int x = arr[top];
+    top--;
+    return x;
+  }
+  
+  int Top() 
+  {
+    return arr[top];
+  }
+  int Size() 
+  {
+    return top + 1;
+  }
+};
+
+
+Ques 2:- Implement Queue Using Arrays
+
+Code:-
+
+class Node{
+ public:
+   int data;
+   Node* next;
+   Node(int data){
+       this->data=data;
+       this->next=NULL;
+   }
+};
+class Queue {
+public:
+    Node *head,*tail;
+    Queue() {
+        head = NULL;
+        tail = NULL;
+    }
+
+    /*----------------- Public Functions of Queue -----------------*/
+
+    bool isEmpty() {
+        return (head==NULL&&tail==NULL);
+    }
+
+    void enqueue(int data) {
+        Node *newNode = new Node(data);
+        if(head==NULL)
+        {
+            head = newNode;
+            tail = newNode;
+        }
+        else
+        {
+            tail->next = newNode;
+            tail = newNode;
+        }
+    }
+
+    int dequeue() {
+        if(head==NULL)
+            return -1;
+        Node*temp=head;
+        head = head->next;
+        if(head==NULL)
+            tail = NULL;
+        int x = temp->data;
+        delete(temp);
+        return x;
+    }
+
+    int front() {
+        if(head==NULL)
+            return -1;
+        return (head->data);
+    }
+};
+
+
+
