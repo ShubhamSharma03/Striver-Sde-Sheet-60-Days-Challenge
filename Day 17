@@ -1,0 +1,101 @@
+Ques 1:- Check for balanced parentheses
+
+Code:-
+
+bool isValidParenthesis(string s)
+{
+    stack<char> st;
+    
+    for(int i=0;i<s.length();i++)
+    {
+        char ch=s[i];
+        
+        // make open bracket first 
+        if(ch=='(' || ch=='{' || ch=='[') st.push(ch);
+        
+        // vice versa of above
+        else
+        {
+            if(!st.empty())
+            {
+                // Store a topmost element in somewhere.
+                char top =st.top();           
+                // return true if u find a pair
+                if(( ch==')' && top=='(' )|| ( ch=='}' && top=='{' ) || ( ch==']' && top=='[' )) st.pop();
+                // Return false if dont find pair.
+                else return false;
+            }
+            
+            // when stack empty and u will not find any pair.
+            else return false;
+        }      
+    }
+    
+    // if you traverse the whole array and able to find the pair combo return true.
+    if(st.empty()) return true;
+    // Otherwise return false.
+    else return false;
+    
+}
+
+Ques 2:- Next Greater Element
+
+Code:- 
+
+vector<int> nextGreater(vector<int> &arr, int n) {
+    
+    vector<int> ans;
+    stack<int> st;
+    
+    for(int i=arr.size()-1;i>=0;--i)
+    {
+        if(st.empty()) ans.push_back(-1);
+        
+        else 
+        {
+            while(!st.empty() && st.top()<=arr[i]) st.pop();
+            
+            if(st.empty()) ans.push_back(-1);
+            
+            else ans.push_back(st.top());
+        }
+         st.push(arr[i]);
+    }
+        reverse(ans.begin(),ans.end());
+        return ans;
+}
+
+Ques 3:- Sort a Stack
+
+Code:- 
+
+void insertSorted(stack<int> &s,int element)
+{
+    if(s.empty() || (s.top()<element))
+    {
+        s.push(element);
+        return;
+        
+    }
+    int n=s.top();
+    s.pop();
+    
+    //Recursive Function
+    insertSorted(s,element);
+    
+    s.push(n);
+}
+void sortStack(stack<int> &stack)
+{
+    //Base Case
+	  if(stack.empty()) return;
+   
+    int num=stack.top();
+    stack.pop();
+    
+    //Recursive Call
+    sortStack(stack);
+    
+    // Make a function to sortedInsert
+    insertSorted(stack,num);
+}
