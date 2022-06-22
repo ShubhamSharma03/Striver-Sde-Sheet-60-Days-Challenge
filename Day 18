@@ -1,0 +1,118 @@
+Ques 1:- Next Smaller Element
+
+Code:-
+
+vector<int> nextSmallerElement(vector<int> &arr, int n)
+{
+    stack<int> s;
+    s.push(-1);
+    vector<int> ans(n);
+    
+    for(int i=n-1;i>=0;i--)
+    {
+        int curr=arr[i];
+        while(s.top()>=curr) s.pop();
+        
+        ans[i]=s.top();
+        s.push(curr);
+    }
+      return ans;
+  
+}
+
+Ques 2:- LRU Cache
+
+Code:- 
+
+vector<int> nextSmaller(vector<int>& arr , int n)
+    {
+        stack<int> st;
+        st.push(-1);
+        vector<int> ans(n);
+        
+        for(int i=n-1;i>=0;i--)
+        {
+            int curr=arr[i];
+            while(st.top()!=-1 && arr[st.top()]>=curr) st.pop();
+            
+            ans[i]=st.top();
+            st.push(i);
+        }
+        return ans;
+    }
+    
+        vector<int> prevSmaller(vector<int>& arr , int n)
+    {
+        stack<int> st;
+        st.push(-1);
+        vector<int> ans(n);
+        
+        for(int i=0;i<n;i++)
+        {
+            int curr=arr[i];
+            while(st.top()!=-1 && arr[st.top()]>=curr) st.pop();
+            
+            ans[i]=st.top();
+            st.push(i);
+        }
+        return ans;
+    }
+
+int largestRectangle(vector < int > & heights) {
+      int n=heights.size();
+        
+        // next smaller element find kro
+        vector<int> next(n);
+        next=nextSmaller(heights,n);
+        
+        // prev smaller element find kro
+        vector<int> prev(n);
+        prev=prevSmaller(heights,n);
+        
+        int maxArea=INT_MIN;
+        
+        for(int i=0;i<n;i++)
+        {
+            int l=heights[i];
+            
+            if(next[i]==-1) next[i]=n; 
+            
+            int b=next[i]-prev[i]-1;
+            
+            int area=l*b;
+            
+            maxArea=max(maxArea,area);     
+        }
+        return maxArea;
+ }
+ 
+ Ques 3:- Sliding Window maximum
+ 
+ Code:-
+ 
+ vector<int> slidingWindowMaximum(vector<int> &nums, int &k)
+{
+    int n=nums.size();
+        vector<int> ans;
+        deque<int> dq;
+        
+        int i=0;
+        int j=0;
+        
+        while(j<n)
+        {
+            while(!dq.empty() && dq.back()<nums[j]) dq.pop_back();
+            dq.push_back(nums[j]);
+            
+            if(j-i+1==k)
+            {
+                ans.push_back(dq.front());
+                if(nums[i]==dq.front()) dq.pop_front();
+                i++;
+                j++;
+            }
+            
+            else j++;
+        }
+        return ans;
+}
