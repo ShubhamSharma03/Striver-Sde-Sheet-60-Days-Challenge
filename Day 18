@@ -20,7 +20,7 @@ vector<int> nextSmallerElement(vector<int> &arr, int n)
   
 }
 
-Ques 2:- LRU Cache
+Ques 2:- Largest rectangle in a histogram
 
 Code:- 
 
