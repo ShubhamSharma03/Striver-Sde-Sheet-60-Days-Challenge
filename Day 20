@@ -1,0 +1,49 @@
+Ques 1:- Longest Common Prefix
+
+Code:-
+
+string longestCommonPrefix(vector<string> &str, int n)
+{    
+        if(n==0) return "";
+        
+        string ans  = "";
+        sort(begin(str), end(str));
+        string a = str[0];
+        string b = str[n-1];
+        
+        for(int i=0; i<a.size(); i++)
+        {
+            
+            if(a[i]==b[i]) ans+=a[i];
+            
+            else break;
+            
+        }  
+        return ans;
+}
+
+
+Ques 2:- Check for Anagrams
+
+Code:-
+
+bool areAnagram(string &s, string &t){
+    if(s.length()!=t.length()) return false;
+        
+        unordered_map<char,int> counts;
+        
+        for(int i=0;i<s.length();i++)
+        {
+            // Ist store the s element in map then check for the same in t and 
+            // if we find the element than just minus from the count.
+            counts[s[i]]++;
+            counts[t[i]]--;
+        }
+        
+        for(auto count: counts)
+            // if still the element is exist in the map then it means it is not an angram
+            if(count.second) return false;
+        return true;
+    
+}
+
