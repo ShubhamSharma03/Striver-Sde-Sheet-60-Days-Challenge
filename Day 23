@@ -1,0 +1,110 @@
+Ques 1: Root to node path in a Binary Tree
+
+Code:- 
+
+bool getPath(TreeNode* root, vector<int> &arr, int x)
+{
+    if(!root) return false;
+    
+    arr.push_back(root->val);
+    
+    if(root->val==x) return true;
+    
+    if(getPath(root->left,arr,x)|| getPath(root->right,arr,x)) return true;
+    
+    arr.pop_back();
+    return false;
+}
+vector<int> Solution::solve(TreeNode* A, int B) {
+    vector<int> arr;
+    if(A==NULL) return arr;
+    
+    getPath(A,arr,B);
+    return arr;
+}
+
+Ques 2:- Max width of a Binary Tree
+
+Code:- 
+
+int widthOfBinaryTree(TreeNode* root) {
+        
+        if(!root) return 0;
+        
+        int ans=0;
+        
+        queue<pair<TreeNode*,long>> q;
+        q.push({root,0});
+        
+        while(!q.empty())
+        {
+            int size=q.size();
+            int mini=q.front().second;
+            int first,last;
+            for(int i=0;i<size;i++)
+            {
+                int curr_id=q.front().second-mini;
+                TreeNode* node=q.front().first;
+                q.pop();
+                
+                if(i==0) first=curr_id;
+                if(i==size-1) last=curr_id;
+                
+                if(node->left) q.push({node->left,curr_id*2LL+1});
+                
+                if(node->right) q.push({node->right,curr_id*2LL+2});
+            }
+            ans=max(ans,last-first+1);
+        }
+        return ans;
+    }
+
+
+Ques 3:- Binary Tree Level Order Traversal
+
+Code:- 
+
+vector<vector<int>> levelOrder(TreeNode* root) {
+        
+        vector<vector<int>> res;
+        queue<TreeNode*> q;
+        
+        if(!root) return res;
+        q.push(root);
+        
+        while(!q.empty())
+        {
+            int currsize=q.size();
+            vector<int> currLevel;
+            
+            while(currsize>0)
+            {
+                TreeNode* currNode=q.front();
+                q.pop();
+                
+                currLevel.push_back(currNode->val);
+                currsize--;
+                
+                if(currNode->left) q.push(currNode->left);
+                if(currNode->right) q.push(currNode->right);
+            }
+            
+            res.push_back(currLevel);
+        }
+        return res;
+    }
+    
+ Ques 4: - Height of a Binary Tree
+ 
+ Code:- 
+ 
+ int maxDepth(TreeNode* root) 
+    {
+        if(root==NULL) return 0;
+        
+        int left=1+maxDepth(root->left);
+        int right=1+maxDepth(root->right);
+        
+        return max(left,right);
+    }
+  
