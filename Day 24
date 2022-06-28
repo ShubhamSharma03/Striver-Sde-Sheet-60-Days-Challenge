@@ -1,0 +1,84 @@
+Ques1:- Diameter of Binary Tree
+
+Code:-
+
+ int diameterOfBinaryTree(TreeNode* root) 
+    { 
+        int d=0;
+        rec(root,d);
+        return d;
+    }
+    
+    int rec(TreeNode* root,int &d)
+    {
+        // if root is NULL
+        if(root==NULL) return 0;
+        
+        // Both sides recursively moves
+        int ld=rec(root->left,d);
+        int rd=rec(root->right,d);
+        
+        // It stores the diameter
+        d=max(ld+rd,d);
+        
+        // It return the height 
+        return max(ld,rd)+1;
+    }
+
+Ques 2:- Check if the Binary tree is height-balanced or not
+
+Code:- 
+
+int depth(TreeNode* root)
+    {
+        if(root==NULL) return 0;
+        return max(depth(root->left),depth(root->right))+1;
+    }
+   
+    bool isBalanced(TreeNode* root) {
+        
+        if(root==NULL) return true;
+        
+        int left=depth(root->left);
+        int right=depth(root->right);
+        
+        return abs(right-left)<=1 && isBalanced(root->left) && isBalanced(root->right);
+    }
+    
+Ques 3:- LCA in Binary Tree
+
+Code:- 
+
+TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p,TreeNode* q) {
+        
+        if(root==NULL) return NULL;
+        
+        if(root->val == p->val || root->val == q->val) return root;
+        
+        TreeNode* leftSubTree  = lowestCommonAncestor(root->left,p,q);
+        TreeNode* rightSubTree = lowestCommonAncestor(root->right,p,q);
+        
+        
+        if(leftSubTree!=NULL && rightSubTree!=NULL) return root;
+        
+        if(leftSubTree!=NULL) return leftSubTree;
+        if(rightSubTree!=NULL) return rightSubTree;
+        
+        return NULL;
+    }
+    
+ Ques 4:- Check if two trees are identical or not
+ 
+ Code:- 
+ 
+ bool isSameTree(TreeNode* p, TreeNode* q) {
+        if(p==NULL && q==NULL)
+            return true;
+        if(p==NULL || q==NULL)
+            return false;
+        if(p->val!=q->val)
+            return false;
+        
+        return isSameTree(p->left,q->left) && isSameTree(p->right,q->right);
+    }
+   
