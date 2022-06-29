@@ -1,0 +1,147 @@
+Ques 1:-  Zig Zag Traversal of Binary Tree
+
+Code:- 
+
+vector<vector<int>> zigzagLevelOrder(TreeNode* root) {
+        
+        // Is ques mai hume flag ki help leni hai 
+        // Uski help se hum L->R jab move krenge tb hum flag=1 rakenge and then hum flag=0 krdenge.
+        
+        vector<vector<int>> result;
+        if(root==NULL) return result;
+        
+        queue<TreeNode*> q;
+        q.push(root);
+        
+        bool lefttoRight=true;
+        
+        while(!q.empty())
+        {
+            int size=q.size();
+            vector<int> row(size);
+            
+            for(int i=0;i<size;i++)
+            {
+                TreeNode* node=q.front();
+                q.pop();
+                
+                int index=(lefttoRight) ? i : (size-1-i);
+                row[index]=node->val;
+                
+                if(node->left) q.push(node->left);
+                if(node->right) q.push(node->right);
+            }
+            lefttoRight=!lefttoRight;
+            result.push_back(row);
+        }
+        return result;
+    }
+    
+
+Ques 2:- Boundary Traversal of Binary Tree
+
+Code:- 
+
+bool isLeaf(TreeNode<int>* root){
+  if(!root->left and !root->right) return true;
+  else  return false;
+  
+}
+void leftBoundary(TreeNode<int> * root, vector<int> &res)
+{
+    TreeNode<int>*  curr = root->left;
+    
+    while(curr)
+    {
+        if(!isLeaf(curr)) res.push_back(curr->data);
+        if(curr->left) curr=curr->left;
+        else curr=curr->right;
+    } 
+}
+
+void rightBoundary(TreeNode<int> * root, vector<int> &res)
+{
+    TreeNode<int>*  curr=root->right;
+    vector<int> tmp;
+    while(curr)
+    {
+        if(!isLeaf(curr)) tmp.push_back(curr->data);
+        if(curr->right) curr=curr->right;
+        else curr=curr->left;   
+    } 
+    
+    for(int i=tmp.size()-1;i>=0;i--) res.push_back(tmp[i]);
+}
+
+void addleaves(TreeNode<int> * root, vector<int> &res)
+{
+    if(isLeaf(root))
+    {
+        res.push_back(root->data);
+        return;
+    }
+    
+    if(root->left) addleaves(root->left,res);
+    if(root->right) addleaves(root->right,res);
+   
+}
+vector<int> traverseBoundary(TreeNode<int>* root)
+{
+    vector<int> res;
+    if(!root) return res;
+    if(!isLeaf(root)) res.push_back(root->data);
+    leftBoundary(root,res);
+    addleaves(root,res);
+    rightBoundary(root,res);
+    return res;
+}
+
+
+Ques 3:- Binary Tree Maximum Path Sum
+
+Code: - 
+
+int max_sum=INT_MIN;
+    int max_gain(TreeNode* root)
+    {
+        if(!root) return 0;
+        int left=max(max_gain(root->left),0);
+        int right=max(max_gain(root->right),0);
+        
+        int max_price=left+right+root->val;
+        
+        max_sum=max(max_sum,max_price);
+        
+        return root->val+max(left,right);
+        
+    }
+    
+    int maxPathSum(TreeNode* root) {
+        max_gain(root);
+        return max_sum;
+    }
+    
+Ques 4: - Symmetric Tree
+
+Code: - 
+
+class Solution {
+public:
+
+    bool isMirror(TreeNode* l,TreeNode* r)
+    {
+        if(l==NULL && r==NULL) return true;
+        
+        else if(l==NULL || r==NULL) return false;
+        
+        else if(l->val!=r->val) return false;
+        
+        return isMirror(l->left,r->right) && isMirror(l->right,r->left);
+    }
+    
+    bool isSymmetric(TreeNode* root) {
+        
+        if(root==NULL) return true;
+        return isMirror(root->left,root->right);
+    }
+    
