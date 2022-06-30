@@ -1,0 +1,129 @@
+Ques 1:- Construct Binary Tree from Inorder and Preorder
+
+Code:-
+
+class Solution {
+private:
+    int preIndex=0;
+    
+    TreeNode* helper(vector<int>& preorder, vector<int>& inorder ,int is, int ie)
+    {
+        if(is>ie) return NULL;
+        
+        TreeNode* root=new TreeNode(preorder[preIndex]);
+        preIndex++;
+        
+        int inIndex;
+        
+        for(int i=is;i<=ie;i++)
+        {
+            if(inorder[i]==root->val)
+            {
+                inIndex=i;
+                break;  
+            }
+        }
+        
+        root->left=helper(preorder,inorder,is,inIndex-1);
+        root->right=helper(preorder,inorder,inIndex+1,ie);
+        
+        return root;
+        
+    }
+    
+public:    
+    TreeNode* buildTree(vector<int>& preorder, vector<int>& inorder) 
+    {
+        TreeNode* ans= helper(preorder,inorder,0,inorder.size()-1);
+        return ans;
+        
+    }
+};
+
+Ques 2:- Construct Binary Tree from Inorder and Postorder
+
+Code:- 
+
+class Solution {
+public:
+    TreeNode* helper(vector<int>& in,int is,int ie ,vector<int>& po, int ps, int pe)
+    {
+        if(is>ie || ps>pe) return NULL;
+        
+        TreeNode* node=new TreeNode(po[pe]);
+        int SI=is;
+        
+        while(node->val!=in[SI]) SI++;
+        
+        node->left=helper(in,is,SI-1,po,ps,ps+SI-is-1);
+        node->right=helper(in,SI+1,ie,po,ps+SI-is,pe-1);
+        
+        return node;
+               
+    }
+    TreeNode* buildTree(vector<int>& in, vector<int>& po) {
+        
+        TreeNode* ans=helper(in,0,in.size()-1,po,0,po.size()-1);
+        return ans;
+        
+    }
+};
+
+Ques 3:- Flatten Binary Tree to LinkedList
+
+Code:- 
+
+class Solution {
+public:
+    void flatten(TreeNode* root) {
+        stack<TreeNode*> st;
+        
+        if(!root) return;
+        st.push(root);
+        
+        while(!st.empty())
+        {
+            TreeNode* curr=st.top();
+            st.pop();
+            
+            if(curr->right) st.push(curr->right);
+            if(curr->left)  st.push(curr->left);
+            if(!st.empty()) curr->right=st.top();
+            
+            curr->left=NULL;
+        }
+        
+    }
+};
+
+Ques 4:- Check for Childern Sum Property
+
+Code:- 
+
+void changeTree(BinaryTreeNode < int > * root) {
+    
+    if(root==NULL) return;
+    int child=0;
+    
+    if(root->left) child+=root->left->data;
+    if(root->right) child+=root->right->data;
+    if(child>=root->data) root->data=child;
+    
+    else
+    {
+        if(root->left) root->left->data=root->data;
+        else if(root->right) root->right->data=root->data;
+        
+    }
+    
+    changeTree(root->left);
+    changeTree(root->right);
+    
+    int total=0;
+    if(root->left) total+=root->left->data;
+    if(root->right) total+=root->right->data;
+    
+    if(root->left or root->right) root->data=total;
+    
+    
+}  
