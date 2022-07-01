@@ -1,0 +1,95 @@
+Ques 1:- Populate Next Right pointers of Tree
+
+Code:- 
+
+class Solution {
+public:
+    Node* connect(Node* root) {
+        
+        // If not a root then return NULL
+        if(!root) return NULL;
+        
+        auto L=root->left , R=root->right , N=root->next;
+        
+        // If Left is present than at time connect L->next to its Right
+        // And at next if N  is true then at that time Connect R->next to its  root->next->left
+        if(L)
+        {
+            // L->R moves
+            L->next=R;
+            // Right ko left se connect krre hai.
+            if(N) R->next=root->next->left;
+            
+            connect(L);
+            connect(R);
+        }
+        
+         
+        return root;
+    }
+};
+
+Ques 2:- Search given Key in BST
+
+Code:- 
+
+class Solution {
+public:
+    TreeNode* searchBST(TreeNode* root, int val) {
+        if(root==NULL) return NULL;
+        if(root->val==val) return root;
+        if(root->val<val) return searchBST(root->right,val);
+        return searchBST(root->left,val);
+    }
+};
+
+Ques 3:- Converted Sorted Array To BST.	
+
+Code:- 
+
+class Solution {
+public:
+    TreeNode* createBST(vector<int>& nums,int start,int end)
+    {
+        if(start>end) return NULL;
+        
+        int mid=start+(end-start)/2;
+        
+        TreeNode* root= new TreeNode(nums[mid]);
+        
+        root->left=createBST(nums,start,mid-1);
+        root->right=createBST(nums,mid+1,end);
+        return root;
+        
+    }
+    TreeNode* sortedArrayToBST(vector<int>& nums) {
+        return createBST(nums,0,nums.size()-1);
+    }
+};
+
+Ques 4:- Construct BST from preorder traversal	
+
+Code:-
+
+class Solution {
+public:
+    TreeNode* buildTree(vector<int> &preorder,int &preIndex,int boundary)
+    {
+        if(preIndex>=preorder.size() || preorder[preIndex]>=boundary) return NULL;
+        
+        TreeNode* root=new TreeNode(preorder[preIndex]);
+        preIndex++;
+        
+        // For LST and BST
+        root->left=buildTree(preorder,preIndex,root->val);
+        root->right=buildTree(preorder,preIndex,boundary);
+        return root;
+        
+    }
+    TreeNode* bstFromPreorder(vector<int>& preorder) {
+        int preIndex=0;
+        return buildTree(preorder,preIndex,1001);
+    }
+};
+
+
