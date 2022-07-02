@@ -1,0 +1,94 @@
+Ques 1:- Find LCA of two nodes in BST
+
+Code:-
+
+class Solution {
+public:
+    TreeNode* lowestCommonAncestor(TreeNode* root, TreeNode* p, TreeNode* q) {
+        
+        
+        if(root==NULL) return NULL;
+        
+        // Agr p value and q value badi hai root value se then hum right mai search krenge.
+        if(root->val < p->val && root->val < q->val)  return lowestCommonAncestor(root->right,p,q);
+        
+        // And Agr just upr wali condition ka opposite hai toh hum left mai search krenge.
+        else if(root->val > p->val && root->val > q->val) return lowestCommonAncestor(root->left,p,q);
+        
+        // Other wise root return krwa denge.
+        else return root;
+    }
+};
+
+Ques 2:- Check is a BT is BST or not
+
+Code:- 
+
+class Solution {
+    
+private: 
+    vector<int> tree;
+    
+public:
+    void inorder(TreeNode* root)
+    {
+        if(!root) return;
+        
+        inorder(root->left);
+        tree.push_back(root->val);
+        inorder(root->right);
+    }
+    
+    bool isValidBST(TreeNode* root) {
+        
+        if(!root) return true;
+        
+        inorder(root);
+        
+        for(int i=1;i<tree.size();i++) if(tree[i]<=tree[i-1]) return false;
+        
+        return true;
+      
+    }
+};
+
+Ques 3: Find the inorder predecessor/successor of a given Key in BST.
+
+Code:- 
+
+void successor(Node* root, Node*& suc,int key)
+{
+    while(root!=NULL)
+    {
+        if(root->key<=key) root=root->right;
+        
+        else
+        {
+            suc=root;
+            root=root->left;
+        }
+    }
+}
+
+void predecessor(Node* root, Node*& pre,int key)
+{
+    while(root!=NULL)
+    {
+        if(root->key>=key) root=root->left;
+        
+        else
+        {
+            pre=root;
+            root=root->right;
+        }
+    }
+}
+
+void findPreSuc(Node* root, Node*& pre, Node*& suc, int key)
+{
+    successor(root,suc,key);
+    predecessor(root,pre,key);
+
+}
+
+
