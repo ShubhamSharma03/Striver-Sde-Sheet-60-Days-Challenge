@@ -1,0 +1,105 @@
+Ques 1:- Floor in a BST	
+
+Code:- 
+
+int floorInBST(TreeNode<int> * root, int X)
+{
+    
+    int floorVal=0;
+    
+    while(root!=NULL)
+    {
+        if(root->val==X)
+        {
+            floorVal=root->val;
+            return floorVal;
+        }
+        
+        else if(root->val>X) root=root->left;
+        
+        else
+        {
+            floorVal=root->val;
+            root=root->right;
+        }
+    }
+     return floorVal;
+}
+
+Ques 2: Ceil in a BST	
+
+Code:- 
+
+int findCeil(BinaryTreeNode<int> *root, int x){
+    
+    int ceil=-1;
+    
+    while(root)
+    {
+        if(root->data==x)
+        {
+            ceil=root->data;
+            return ceil;         
+        }
+        
+        if(root->data>x)
+        {
+            ceil=root->data;
+            root=root->left;
+        }
+        
+        else root=root->right;
+        
+    }
+        return ceil;
+}
+
+Ques 3:- Find K-th largest element in BST
+
+Code:- 
+
+class Solution
+{
+    public:
+    void inorder(Node* root, vector<int> &res)
+    {
+        if(!root) return;
+        
+        inorder(root->right,res);
+        res.push_back(root->data);
+        inorder(root->left,res);
+    }
+    
+    int kthLargest(Node *root, int K)
+    {
+        if(!root) return -1;
+        vector<int> arr;
+        inorder(root,arr);
+        return arr[K-1];
+    }
+};
+
+Ques 4:- Find K-th smallest element in BST	
+
+Code: - 
+
+class Solution {
+public:
+    void inorder(TreeNode* root, vector<int> &res)
+    {
+        if(!root) return;
+        
+        inorder(root->left,res);
+        res.push_back(root->val);
+        inorder(root->right,res);
+    }
+    
+    int kthSmallest(TreeNode* root, int k) {
+        
+        if(!root) return -1;
+        vector<int> arr;
+        inorder(root,arr);
+        return arr[k-1];
+        
+    }
+};
