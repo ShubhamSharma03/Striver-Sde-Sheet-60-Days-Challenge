@@ -1,0 +1,137 @@
+Ques 1:- Size of the largest BST in a Binary Tree
+
+Code:- 
+
+struct dat{
+    int sum = 0;
+    int check = true;
+    int mi = INT_MAX;
+    int ma = INT_MIN;
+};
+
+int value = INT_MIN;
+dat func(TreeNode *root)
+{
+    dat ans,ll,rr;
+    
+    if (root == nullptr)
+        return ans;
+
+    ll = func(root->left);
+    rr = func(root->right);
+    
+    ans.sum = ll.sum + rr.sum + root->val;
+    ans.check = ((root->val) > ll.ma ) && ((root->val) < rr.mi) && ll.check && rr.check;
+    ans.mi = min(root->val,ll.mi);
+    ans.ma = max(root->val,rr.ma);
+    
+    if (ans.check)
+        value = max(value, ans.sum);
+
+    return ans;
+
+}
+class Solution
+{
+    public:
+        int maxSumBST(TreeNode *root)
+        {
+            value = 0;
+            func(root);
+            return value;
+        }
+};
+
+
+Ques 2:- Flood-fill Algorithm
+
+Code: - 
+
+class Solution {
+private:
+    bool isValid(vector<vector<int>>& image,int i,int j,int n,int m,int color)
+    {
+        if(i>=0 && i<n && j>=0 && j<m && image[i][j]==color) return true;
+        return false;
+    }
+    
+    void floodFillRec(vector<vector<int>>& image,int i,int j,int n,int m,int color,int newColor)
+    {
+        image[i][j]=newColor;
+        
+        if(isValid(image,i+1,j,n,m,color))
+            floodFillRec(image,i+1,j,n,m,color,newColor);
+        if(isValid(image,i-1,j,n,m,color))
+            floodFillRec(image,i-1,j,n,m,color,newColor);
+        if(isValid(image,i,j+1,n,m,color))
+            floodFillRec(image,i,j+1,n,m,color,newColor);
+        if(isValid(image,i,j-1,n,m,color))
+            floodFillRec(image,i,j-1,n,m,color,newColor);
+        
+    }
+    
+public:
+    vector<vector<int>> floodFill(vector<vector<int>>& image, int sr, int sc, int newColor) {
+        
+        int n=image.size();
+        int m=image[0].size();
+        
+        int color=image[sr][sc];
+        
+        if(color==newColor) return image;
+        floodFillRec(image,sr,sc,n,m,color,newColor);
+        return image;
+            
+    }
+};
+
+Ques 3:- K-th largest element in an unsorted array.
+
+Code: - 
+
+class Solution {
+public:
+    int findKthLargest(vector<int>& nums, int k) {
+           
+        int n=nums.size();
+        priority_queue<int,vector<int>,greater<int>> minh;
+        
+        for(int i=0;i<n;i++)
+        {
+            minh.push(nums[i]);
+            if(minh.size()>k)
+                minh.pop();
+        }
+        return minh.top();
+    }
+    
+};
+
+Ques 4: - K-th largest element in a stream.
+
+Code: - 
+
+class KthLargest {
+public:
+    int size;
+    
+    priority_queue<int,vector<int>,greater<int>> pq;
+    
+    KthLargest(int k, vector<int>& nums) 
+    {
+        size=k;
+        for(int i=0;i<nums.size();i++)
+        {
+            pq.push(nums[i]);
+            if(pq.size()>k) pq.pop();
+        }
+    }
+    
+    int add(int val) 
+    {
+        pq.push(val);
+        if(pq.size()>size) pq.pop();
+        return pq.top();
+        
+    }
+};
