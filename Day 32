@@ -1,0 +1,157 @@
+Ques 1:- Detect A cycle in Undirected Graph using BFS (Course Schedule)
+
+Code:-
+
+class Solution {
+public:
+    vector<vector<int>> createGraph(int n,vector<vector<int>>& pre)
+    {
+        vector<vector<int>> graph(n);
+        for(auto it:pre)
+        {
+            int v=it[1];
+            int u=it[0];
+            graph[v].push_back(u);
+        }
+        return graph;
+    }
+    
+    bool canFinish(int n, vector<vector<int>>& pre) 
+    {
+        
+        vector<vector<int>> graph=createGraph(n,pre);
+        vector<int> indegree(n,0);
+        for(int i=0;i<n;i++)
+        {
+            for(int it: graph[i]) indegree[it]++;
+        }
+        queue<int> q;
+        int ans=0;
+        unordered_set<int> vis;
+        
+        for(int i=0;i<n;i++)
+        {
+            if(indegree[i]==0) 
+            {
+                q.push(i);
+                ans++;
+            }
+        }
+        
+        while(!q.empty())
+        {
+            int currVertex=q.front();
+            q.pop();
+            
+            if(vis.find(currVertex)!=vis.end()) continue;
+            vis.insert(currVertex);
+            
+            for(int neighbour:graph[currVertex])
+            {
+                indegree[neighbour]--;
+                if(indegree[neighbour]==0)
+                {
+                    q.push(neighbour);
+                    ans++;
+                }
+            }
+        }
+        
+        if(ans==n) return true;
+        return false;
+    }
+};
+
+
+Ques 2:- Number of Islands
+
+Code:- 
+
+class Solution {
+private:
+    bool isvalid(int i,int j,int n,int m,vector<vector<char>>& grid)
+    {
+        if(i<n && i>=0 && j<m && j>=0 && grid[i][j]=='1') return true;
+        
+        return false;
+    }
+    void numIslandsRec(int i,int j,int n,int m,vector<vector<char>>& grid)
+    {
+        grid[i][j]='0';
+        
+        if(isvalid(i+1,j,n,m,grid))
+            numIslandsRec(i+1,j,n,m,grid);
+        if(isvalid(i-1,j,n,m,grid))
+            numIslandsRec(i-1,j,n,m,grid);
+        if(isvalid(i,j+1,n,m,grid))
+            numIslandsRec(i,j+1,n,m,grid);
+        if(isvalid(i,j-1,n,m,grid))
+            numIslandsRec(i,j-1,n,m,grid);
+        
+    }
+    
+public:
+    int numIslands(vector<vector<char>>& grid) {
+        
+        int n=grid.size();
+        int m=grid[0].size();
+        int ans=0;
+        for(int i=0;i<n;i++)
+        {
+            for(int j=0;j<m;j++)
+            {
+                if(grid[i][j]=='1')
+                {
+                    ans++;
+                    numIslandsRec(i,j,n,m,grid);
+                }
+            }
+        }
+        return ans;
+    }
+};
+
+
+Ques 3: Is Graph Biparatte ?
+
+Code:- 
+
+class Solution {
+public:
+    bool isBipartite(vector<vector<int>>& graph) 
+    {
+        
+        int n = graph.size();
+
+        vector<int> color(n); // 0: uncolored; 1: color A; -1: color B
+
+        queue<int> q; // queue, resusable for BFS    
+
+        for (int i = 0; i < n; i++) {
+
+          if (color[i]) continue; // skip already colored nodes
+
+          // BFS with seed node i to color neighbors with opposite color
+          color[i] = 1; // color seed i to be A (doesn't matter A or B)
+
+          for (q.push(i); !q.empty(); q.pop()) {
+
+            int cur = q.front();
+
+            for (int neighbor : graph[cur]) 
+            {
+              if (!color[neighbor]) // if uncolored, color with opposite color
+                  
+                  color[neighbor] = -color[cur]; q.push(neighbor); 
+
+
+              else if (color[neighbor] == color[cur]) return false; // if already colored with same color, can't be bipartite!
+
+            }        
+          }
+        }
+
+        return true;
+        
+    }
+};
