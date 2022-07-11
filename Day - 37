@@ -1,0 +1,114 @@
+Ques 1:- Edit Distance
+
+Code:- 
+
+class Solution {   
+public:
+    int minDistance(string a, string b) {
+        int n = a.length();
+        int m = b.length();
+        int static dp[501][501];
+        
+        //if first string is empty and then copy all elements form second to first string
+        for(int i=0;i<n+1;i++)
+            dp[i][0]=i;
+        
+        // if second string is empty then copy all the elements from first to second string.
+        for(int j=0;j<m+1;j++)
+            dp[0][j]=j;
+        
+     
+        for(int i=1;i<n+1;i++)
+        {
+            for(int j=1;j<m+1;j++)
+            {
+                // if both the strings are equal then no need to do. 
+                if(a[i-1]==b[j-1]) dp[i][j]=dp[i-1][j-1];
+                
+                // if both are not equal then try to get min of these three
+                
+                else dp[i][j]=1+min({dp[i-1][j],// insert 
+                                     dp[i][j-1],// delete
+                                     dp[i-1][j-1]}); // replace
+                
+            }
+        }
+        
+        return dp[n][m];
+    
+    }
+};
+
+
+Ques 2:- 0 1 Knapsack
+
+Code:- 
+
+int maxProfit(vector<int> &values, vector<int> &weights, int n, int w)
+{
+    if(n==0 || w==0)
+    {
+        return 0; 
+    }
+    
+    int dp[n+1][w+1];
+    
+    for(int i=0;i<=n;i++)
+    {
+        for(int j=0;j<=w;j++)
+        {
+            if(i==0 || j==0)
+            {
+                dp[i][j]=0;
+            }
+            
+            else if(weights[i-1]<=j)
+            {
+                dp[i][j] = max(dp[i-1][j-weights[i-1]]+values[i-1],dp[i-1][j]);
+            }
+            else
+            {
+                dp[i][j] = dp[i-1][j];
+            }
+        }
+    }
+    
+    return dp[n][w];
+}
+
+
+Ques 3:- Palindromic Partitioning 
+
+Code:-
+
+int maxProfit(vector<int> &values, vector<int> &weights, int n, int w)
+{
+    if(n==0 || w==0)
+    {
+        return 0; 
+    }
+    
+    int dp[n+1][w+1];
+    
+    for(int i=0;i<=n;i++)
+    {
+        for(int j=0;j<=w;j++)
+        {
+            if(i==0 || j==0)
+            {
+                dp[i][j]=0;
+            }
+            
+            else if(weights[i-1]<=j)
+            {
+                dp[i][j] = max(dp[i-1][j-weights[i-1]]+values[i-1],dp[i-1][j]);
+            }
+            else
+            {
+                dp[i][j] = dp[i-1][j];
+            }
+        }
+    }
+    
+    return dp[n][w];
+}
