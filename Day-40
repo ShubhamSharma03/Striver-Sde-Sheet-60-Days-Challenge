@@ -1,0 +1,56 @@
+Ques 1:- Maximum sum increasing subsequence
+
+Code:- 
+class Solution{
+public:
+int maxSumIS(int arr[], int n)  { 
+vector<int> dp(n);
+        int ans=arr[0];
+        dp[0]=arr[0];
+        for(int i=1;i<n;i++){
+            dp[i]=arr[i];
+            int temp=INT_MIN;
+            for(int j=0;j<i;j++){
+                if(arr[i]>arr[j]){
+                    if(arr[i]+dp[j]>temp){
+                        temp=arr[i]+dp[j];
+                        dp[i]=temp;
+                    }
+                }
+            }
+            ans=max(ans,dp[i]);
+        }
+        return ans;
+    }
+};
+
+
+Ques 2:- Matrix Chain Multiplication 
+
+Code:- 
+
+class Solution{
+public:
+
+   int t[101][101];
+   int helper(int arr[],int i,int j)
+   {
+       if(i>=j) return 0;
+       
+       if(t[i][j]!=-1) return t[i][j];
+       int ans=INT_MAX;
+       
+       for(int k=i;k<=j-1;k++)
+       {
+           int tempans=helper(arr,i,k)+helper(arr,k+1,j)+(arr[i-1]*arr[j]*arr[k]);
+           ans=min(ans,tempans);
+       }
+        return t[i][j]=ans;
+      
+   }
+    int matrixMultiplication(int n, int arr[])
+    {
+       memset(t, -1, sizeof(t));
+       return helper(arr,1,n-1);
+    }
+};
