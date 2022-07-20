@@ -1,0 +1,39 @@
+Ques 1:- Rabin Carp
+
+Code:- 
+
+vector<int> stringMatch(string &str, string &pat) {
+    vector<int> res;
+    int j = 0;
+    int pat_size = pat.length();
+    for(int i=0; i<str.length(); i++)
+    {
+        int k = i;
+        while(str[k]==pat[j] && j<pat_size)
+        {
+            k++;
+            j++;
+        }
+        if(j==pat_size)
+            res.push_back(i);
+        j=0;
+    }
+    return res;
+}
+
+
+Ques 2:-  Z Algorithm
+
+Code:-
+
+int zAlgorithm(string s, string p, int n, int m)
+{
+	int count=0;
+    for(int i=0;i<n-m+1;i++){
+        string ans=s.substr(i,m);
+        if(ans==p){
+            count++;
+        }
+    }
+    return count;
+}
