@@ -1,0 +1,107 @@
+Ques 1:- Kruskal’s Minimum Spanning Tree Algorithm
+
+Code:- 
+
+class Comp {
+public:
+    bool operator()(const vector<int> &a, const vector<int> &b){
+        if(a[2]>b[2]) return true;
+    }
+};
+
+int getParent(int x, vector<int> & parent)
+{
+    if(parent[x]!=x){
+        return parent[x] = getParent(parent[x], parent);
+    }
+    return x;
+}
+
+int kruskalMST(int n, int m, vector<vector<int>> &graph) {
+    priority_queue<vector<int>, vector<vector<int>>, Comp> q;
+    vector<int> parent(n+1);
+    for(int i=0; i<graph.size(); i++){
+        q.push(graph[i]);
+    }
+    for(int i=0; i<=n; i++) {
+        parent[i]=i;
+    }
+    int t=0, ans=0;
+    while(!q.empty() && t<n-1){
+        auto m = q.top();
+        q.pop();
+        int u = m[0], v = m[1], w = m[2];
+        int x = getParent(u, parent), y = getParent(v, parent);
+        if(x!=y){
+            parent[x]=y;
+            ans+=w;
+            t++;
+        }
+    }
+    return ans;
+}
+
+Ques 2:- Serialize and Deserialize Binary Tree.
+
+Code:- string serializeTree(TreeNode<int> *root)
+{
+ 
+    if(root == NULL) return "";
+    string s = "";
+    queue<TreeNode<int>*> q;
+    q.push(root);
+    while(!q.empty())
+    {
+        TreeNode<int> *node = q.front();
+        q.pop();
+        
+        if(node == NULL)
+            s.append("#,");
+        else
+            s.append(to_string(node->data)+',');
+        if(node != NULL)
+        {
+            q.push(node->left);
+            q.push(node->right);
+        }
+    }
+    return s;
+}
+
+TreeNode<int>* deserializeTree(string &data)
+{
+ 
+    if(data.size() == 0) return NULL;
+    queue<TreeNode<int>*> q;
+    stringstream s(data);
+    string str;
+    getline(s, str, ',');
+    TreeNode<int> *root = new TreeNode<int>(stoi(str));
+    q.push(root);
+    while(!q.empty())
+    {
+        TreeNode<int> *node = q.front();
+        q.pop();
+        
+        getline(s, str, ',');
+        if(str == "#")
+            node->left = NULL;
+        else
+        {
+            TreeNode<int> *leftNode = new TreeNode<int>(stoi(str));
+            node->left = leftNode;
+            q.push(leftNode);
+        }
+        
+        getline(s, str, ',');
+        if(str == "#")
+            node->right = NULL;
+        else
+        {
+            TreeNode<int> *rightNode = new TreeNode<int>(stoi(str));
+            node->right = rightNode;
+            q.push(rightNode);
+        }
+    }
+    return root;
+}
